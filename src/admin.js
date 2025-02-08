@@ -225,7 +225,7 @@ class AdminView extends Component {
     console.log('Delete ', path);
     const details = {
       op: 'delete',
-      path
+      path,
     };
 
     const formBody = [];
@@ -318,6 +318,9 @@ class AdminView extends Component {
       if (this.uploadPathReference && this.uploadPathReference.value) {
         path = this.uploadPathReference.value;
       }
+      if (!path.startsWith('/')) {
+        path = `/${path}`;
+      }
       console.log('Uploading ', path, this.uploadReference.files);
       const formData = new FormData();
       formData.append('op', 'upload');
@@ -339,16 +342,20 @@ class AdminView extends Component {
   }
 
   renderFile(n, fileInfo) {
+    let { path } = fileInfo;
+    if (!path.startsWith('/')) {
+      path = `/${path}`;
+    }
     const clickDelete = () => {
-      this.deleteFile(`/${fileInfo.path}`);
+      this.deleteFile(path);
     };
-    const downloadUrl = `${this.apiUrl}/${fileInfo.path}`;
+    const downloadUrl = `${this.apiUrl}${path}`;
     return html`<div className="line" key=${n}>
                       <div className="fileInfo">
-                        <div><a href="${downloadUrl}" >${fileInfo.path}</a></div>
+                        <div><a href="${downloadUrl}" target="_blank" >${path}</a></div>
                         <div>${fileInfo.size}</div>
                         <div>
-                            <button onClick=${clickDelete} title="delete ${fileInfo.path} ">-</button>
+                            <button onClick=${clickDelete} title="delete ${path} ">-</button>
                         </div>
                       </div>
                     </div>`;
