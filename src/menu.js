@@ -238,6 +238,14 @@ class Menu extends Component {
     layoutMenu.push(html`<a key="-60" 
                       href="#"
                       view="main"
+                      cmd="fetch-engine-events" 
+                      onClick=${this.onClickMenu} >
+                      Request Engine Events
+                      </a>`);
+    layoutMenu.push(html`<hr key="-59" />`);
+    layoutMenu.push(html`<a key="-60" 
+                      href="#"
+                      view="main"
                       cmd="add-box" 
                       onClick=${this.onClickMenu} >
                       Append Box

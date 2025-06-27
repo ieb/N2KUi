@@ -229,6 +229,15 @@ body {
   height: 12rem;
 }
 
+.engine-events {
+  overflow: auto;
+}
+
+.engine-events .nowrap-container {
+  text-wrap-mode: nowrap;
+  margin: 8px;
+}
+
 .textbox > div, .textbox > canvas, textbox > svg {
   position: absolute;
   margin: 0px;

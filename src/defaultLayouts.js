@@ -20,6 +20,7 @@ const layouts = {
         { field: 'Log', id: 14 },
         { field: 'Position', id: 15 },
         { field: 'atmosphericPressure_0', id: 16 },
+        { field: 'Engine Events', id: 16 },
       ],
       id: 1,
       name: 'Engine',

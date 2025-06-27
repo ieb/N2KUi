@@ -714,6 +714,7 @@ class NMEA2000Reference {
         1862: { id: 1862, name: 'Yamaha Marine' },
         1863: { id: 1863, name: 'Faria Instruments' },
         1273: { id: 1273, name: 'Somebody ???' },
+        2046: { id: 2046, name: 'DIY'},
       },
       industry: {
         0: { id: 0, name: 'Global' },
@@ -764,6 +765,17 @@ class NMEA2000Reference {
         3: { id: 3, name: 'Red/Black' },
         4: { id: 4, name: 'Inverse' },
       },
+      engineEvents: {
+        // see https://github.com/ieb/N2KEngine/blob/main/lib/enginesensors/enginesensors.h#L92
+        0: { id: 0, name: 'No event' },
+        1: { id: 1, name: 'Engine Stop' },
+        2: { id: 2, name: 'Low Oil Pressure' },
+        3: { id: 3, name: 'High Coolant Temperature' },
+        4: { id: 4, name: 'High Exhaust Temperature' },
+        5: { id: 5, name: 'High Alternator Temperature' },
+        6: { id: 6, name: 'High Engine Room Temperature' },
+      },
+
     };
   }
 

@@ -13,9 +13,8 @@ const html = htm.bind(h);
 
 
 class DebugCanFrame {
-
   static toJson(upateString) {
-    if (upateString && upateString.trim().length > 0 ) {
+    if (upateString && upateString.trim().length > 0) {
       try {
         return JSON.parse(upateString);
       } catch (e) {
@@ -23,8 +22,8 @@ class DebugCanFrame {
       }
     }
     return {};
-
   }
+
   static parse(canFrameJson) {
     try {
       const canFrame = JSON.parse(canFrameJson);

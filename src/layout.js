@@ -1,7 +1,7 @@
 import { h, Component } from './deps/preact/preact.module.js';
 import htm from './deps/htm/index.module.js';
 import {
-  TextBox, LogBox, TimeBox, LatitudeBox, NMEA2000, SystemStatus,
+  TextBox, LogBox, TimeBox, LatitudeBox, NMEA2000, SystemStatus, EngineEvents,
 } from './displayboxes.js';
 import { MenuButton } from './menubutton.js';
 import { Uploader } from './uploader.js';
@@ -33,6 +33,7 @@ class NMEALayout extends Component {
       'Position',
       'Log',
       'Time',
+      'Engine Events',
       'NMEA2000',
       'System',
     ];
@@ -460,6 +461,17 @@ class NMEALayout extends Component {
                         options=${this.state.options} /> `;
       case 'System':
         return html`<${SystemStatus}
+                        field=${item.field} 
+                        id=${item.id} 
+                        key=${vk}
+                        size=${item.size}
+                        testValue=${item.testValue}
+                        onChange=${this.onChangeItem} 
+                        editing=${this.state.editing}  
+                        storeAPI=${this.storeAPI}
+                        options=${this.state.options} />`;
+      case 'Engine Events':
+        return html`<${EngineEvents}
                         field=${item.field} 
                         id=${item.id} 
                         key=${vk}

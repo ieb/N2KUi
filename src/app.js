@@ -6,10 +6,12 @@ import { StoreView, FrameView } from './storeview.js';
 import { DebugView } from './debugview.js';
 import { AdminView } from './admin.js';
 import { Menu } from './menu.js';
-import { StoreAPIImpl, SeaSmartReader } from './n2kmodule.js';
+import { StoreAPIImpl, SeaSmartReader, SeaSmartEncoder } from './n2kmodule.js';
 import { EventEmitter } from './eventemitter.js';
 import { DefaultLayouts } from './defaultLayouts.js';
 
+// eslint-disable-next-line camelcase
+import { PGN65305_SingleFrameControl } from './n2k/messages_prop.js';
 
 const html = htm.bind(h);
 
@@ -138,7 +140,7 @@ class App extends Component {
   }
 
 
-  handleMenuEvents(command, payload) {
+  async handleMenuEvents(command, payload) {
     if (command === 'set-view'
       || command === 'load-layout'
       || command === 'new-layout') {
@@ -154,6 +156,44 @@ class App extends Component {
           menuKey: Date.now(),
         });
       }
+    } else if (command === 'fetch-engine-events') {
+      const msg = new PGN65305_SingleFrameControl();
+      const n2kMessage = msg.toMessage({
+        pgn: 65305,
+        industryCode: 2046,
+        industry: 4,
+        fn: 11, // send events
+      });
+      console.log("N2K Message", n2kMessage);
+      const seasmartMessage = SeaSmartEncoder.encode(n2kMessage);
+      console.log("N2K Message", n2kMessage, seasmartMessage);
+      const apiUrl = `http://${this.apiHost}`;
+      const response = await fetch(new URL('/api/seasmart', apiUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ msg: seasmartMessage }),
+      });
+      console.log('response', response);
+    } else if (command === 'clear-engine-events') {
+      const msg = new PGN65305_SingleFrameControl();
+      const n2kMessage = msg.toMessage({
+        pgn: 65305,
+        industryCode: 2046,
+        industry: 4,
+        fn: 13, // clear events
+      });
+      const seasmartMessage = SeaSmartEncoder.encode(n2kMessage);
+      const apiUrl = `http://${this.apiHost}`;
+      const response = await fetch(new URL('/api/seasmart', apiUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ msg: seasmartMessage }),
+      });
+      console.log('response', response);
     }
   }
 

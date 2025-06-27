@@ -4,6 +4,7 @@ import { NMEA2000MessageDecoder } from './n2k/messages_decoder.js';
 import { register as registerIsoMessages } from './n2k/messages_iso.js';
 import { register as registerEngineMessages } from './n2k/messages_engine.js';
 import { register as registerNavMessages } from './n2k/messages_nav.js';
+import { register as registerPropMessages } from './n2k/messages_prop.js';
 import { EventEmitter } from './eventemitter.js';
 
 import { Calculations } from './n2k/calculations.js';
@@ -11,7 +12,38 @@ import { Calculations } from './n2k/calculations.js';
 import { LinearHistory, AngularHistory } from './histories.js';
 
 
+// $PCDIN,01FF0D,0001B5F4,0F,FE9F010300*29
+// $PCDIN,FF19,197AB2E9288,FC,FE9F0B00FFFFFFFF,13
 
+class SeaSmartEncoder {
+  static encode(msg) {
+    const encoded = [];
+    encoded.push('$PCDIN');
+    encoded.push(msg.pgn.toString(16).padStart(6, '0').toUpperCase());
+    encoded.push(msg.ts.toString(16).substring(0, 8).toUpperCase());
+    encoded.push(msg.source.toString(16).padStart(2, '0').toUpperCase());
+    encoded.push(SeaSmartEncoder._fromBuffer(msg.data));
+    const sentence = encoded.join(',');
+    return `${sentence}*${SeaSmartEncoder._checkSum(sentence)}`;
+  }
+
+  static _checkSum(sentence) {
+    let cs = 0;
+    for (let i = 1; i < sentence.length; i++) {
+      /* eslint-disable-next-line no-bitwise */
+      cs ^= sentence.charCodeAt(i);
+    }
+    return cs.toString(16).padStart(2, '0').toUpperCase();
+  }
+
+  static _fromBuffer(data) {
+    let s = '';
+    for (let i = 0; i < data.byteLength; i++) {
+      s += data.getUint8(i).toString(16).padStart(2, '0').toUpperCase();
+    }
+    return s;
+  }
+}
 
 
 class SeaSmartParser extends EventEmitter {
@@ -661,6 +693,13 @@ class Store extends EventEmitter {
           newState.rudderPosition = -1e9;
         }
         break;
+      case 130817: // proprietary fast packed, engine events
+        if (message.fn === 12) {
+          newState.engineEvents = message.events;
+          console.log("got", newState);
+          this.lastUpdate[130817] = now;
+        }
+        break;
       default:
         break;
     }
@@ -741,6 +780,7 @@ class StoreAPIImpl {
     registerIsoMessages(this.decoder.messages);
     registerEngineMessages(this.decoder.messages);
     registerNavMessages(this.decoder.messages);
+    registerPropMessages(this.decoder.messages);
 
     this.seasmartParser = new SeaSmartParser(this.decoder);
     this.messageCount = 0;
@@ -814,4 +854,4 @@ class StoreAPIImpl {
 
 
 
-export { StoreAPIImpl, SeaSmartReader };
+export { StoreAPIImpl, SeaSmartReader, SeaSmartEncoder };
