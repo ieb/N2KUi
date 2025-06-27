@@ -521,6 +521,75 @@ class SystemStatus extends TextBox {
   }
 }
 
+class EngineEvents extends TextBox {
+  constructor(props) {
+    super(props);
+    this.testValue = props.testValue;
+  }
+
+  componentDidMount() {
+    this.updateDisplayState({
+      engineEvents: this.storeAPI.getState('engineEvents'),
+    });
+    super.componentDidMount();
+  }
+
+  componentWillUnmount() {
+
+  }
+
+  /* eslint-disable-next-line class-methods-use-this, no-unused-vars */
+  updateDisplayState(changes) {
+    if (changes.engineEvents) {
+      console.log(changes.engineEvents);
+      this.setState({
+        engineEvents: changes.engineEvents.state,
+      });
+    }
+  }
+
+
+/*
+{"pgn":130817,"src":24,"message":"engine events response","industryCode":2046,"industry":3,"fn":12,
+
+"nevents":4,
+
+"events":[{"eventId":1,"engineEvent":{"id":1,"name":"Engine Stop"},"engineHours":0.042},{"eventId":2,"engineEvent":{"id":2,"name":"Low Oil Pressure"},"engineHours":0.083},{"eventId":3,"engineEvent":{"id":3,"name":"High Coolant Temperature"},"engineHours":0.125},{"eventId":4,"engineEvent":{"id":4,"name":"High Exhaust Temperature"},"engineHours":0.167}]}
+*/
+  renderMessages() {
+    if (this.state.engineEvents) {
+      const l = [];
+      l.push(html`<div key="-1" >Engine Events</div>`);
+      for (let i = this.state.engineEvents.length - 1; i >= 0; i--) {
+        const e = this.state.engineEvents[i];
+        l.push(html`<div key=${i} >${e.engineHours}h ${e.engineEvent.name}</div>`);
+      }
+
+      return html`
+                <div className="nowrap-container">
+                    ${l}
+                </div>
+            `;
+    }
+    return html`
+                <div>
+                    No Engine Events
+                </div>
+            `;
+  }
+
+  render() {
+    const themes = `engine-events textbox  ${this.theme} ${this.getSizeClass()} size-maximum `;
+    return html`
+            <div className=${themes} >
+              ${this.renderMessages()}
+              ${this.renderEditOverlay()}
+            </div>
+            `;
+  }
+}
+
+
 class NMEA2000 extends TextBox {
   constructor(props) {
     super(props);
@@ -560,7 +629,7 @@ class NMEA2000 extends TextBox {
       for (const pgn of Object.keys(this.state.nmea2000Data)) {
         const message = this.state.nmea2000Data[pgn];
         const m = [];
-        for (const k of Object.leys(message)) {
+        for (const k of Object.keys(message)) {
           if (message[k] && message[k].id !== undefined) {
             m.push(`${k}: ${message[k].name}(${message[k].id})`);
           } else {
@@ -598,5 +667,5 @@ class NMEA2000 extends TextBox {
 
 
 export {
-  TextBox, LogBox, TimeBox, LatitudeBox, NMEA2000, SystemStatus,
+  TextBox, LogBox, TimeBox, LatitudeBox, NMEA2000, SystemStatus, EngineEvents
 };
