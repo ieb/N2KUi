@@ -24,7 +24,7 @@ self.addEventListener('beforeinstallprompt', (event) => {
   console.debug('Before Event Install ', event);
 });
 
-let cacheEnabled = false;
+let cacheEnabled = true;
 self.addEventListener('message', (event) => {
   if (event.data.cacheEnabled !== undefined) {
     cacheEnabled = event.data.cacheEnabled;
