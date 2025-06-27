@@ -767,7 +767,7 @@ class NMEA2000Reference {
       },
       engineEvents: {
         // see https://github.com/ieb/N2KEngine/blob/main/lib/enginesensors/enginesensors.h#L92
-        0: { id: 0, name: 'No event' },
+        0: { id: 0, name: 'Current Engine Hours' },
         1: { id: 1, name: 'Engine Stop' },
         2: { id: 2, name: 'Low Oil Pressure' },
         3: { id: 3, name: 'High Coolant Temperature' },
