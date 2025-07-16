@@ -238,6 +238,8 @@ body {
   margin: 8px;
 }
 
+
+
 .textbox > div, .textbox > canvas, textbox > svg {
   position: absolute;
   margin: 0px;
@@ -750,6 +752,144 @@ button {
   min-width: 2rem;
   background-color: #34270d;
   color: var(--main-foreground-color);
+}
+
+/* Engine eveents view */
+
+.engine-events-view {
+  width: 100%;
+  height: calc(100vh - 110px);
+  color: var(--main-foreground-color);
+
+}
+
+
+
+
+
+.engine-events-view .freeze-frames {
+  counter-reset: line; /* Reset the line number at the start of the .logview container */
+}
+
+.engine-events-view .events {
+  counter-reset: line; /* Reset the line number at the start of the .logview container */
+}
+
+.engine-events-view button {
+  margin: 10px;
+  padding-top:2px;
+  padding-bottom:2px;
+  padding-left:5px;
+  padding-right:5px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border-color: grey;
+  border-width: 1px;
+  border-style: solid;
+  min-width: 2rem;
+  background-color: #42310d;
+  color: var(--main-foreground-color);
+}
+
+
+.engine-events-view .frame:nth-child(even),
+.engine-events-view .event:nth-child(even) {
+  background-color: #202020; /* Light gray color for even rows */
+}
+
+.engine-events-view .frame:nth-child(odd),
+.engine-events-view .event:nth-child(odd) {
+  background-color: #101010; /* Darker gray color for odd rows */
+}
+
+
+
+.engine-events-view .header,
+.engine-events-view .event-header,
+.engine-events-view .frame, 
+.engine-events-view .event {
+  display: flex; /* To align Key and Value side by side */
+  justify-content: flex-start; /* To give space between Key and Value */
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.engine-events-view .header,
+.engine-events-view .event-header {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: solid 1px var(--main-foreground-color);
+}
+
+
+.engine-events-view .frame, 
+.engine-events-view .event {
+  counter-increment: line; /* Increment the line number for each .logline element */
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.engine-events-view .header::before,
+.engine-events-view .event-header::before {
+  content: ''; /* Add a period and a space after the line number */
+  margin-right: 0.5rem; /* Add some spacing between the line number and the Key */
+  width: 1rem;
+}
+
+.engine-events-view .frame::before,
+.engine-events-view .event::before {
+  content: counter(line); /* Add a period and a space after the line number */
+  margin-right: 0.5rem; /* Add some spacing between the line number and the Key */
+  width: 1rem;
+}
+
+.engine-events-view .header > div,
+.engine-events-view .event-header > div,
+.engine-events-view .frame > div,
+.engine-events-view .event > div  {
+  margin-left: 1em;
+}
+
+.engine-events-view .event-header > div:nth-child(1),
+.engine-events-view .event > div:nth-child(1) {
+  width: 6rem;
+}
+.engine-events-view .event-header > div:nth-child(2),
+.engine-events-view .event > div:nth-child(2) {
+  width: 10rem;
+}
+.engine-events-view .event-header > div:nth-child(3),
+.engine-events-view .event > div:nth-child(3) {
+  width: 10rem;
+}
+
+.engine-events-view .frame > div:nth-child(1),
+.engine-events-view .header > div:nth-child(1) {
+  width: 6rem;
+}
+.engine-events-view .frame > div:nth-child(2),
+.engine-events-view .header > div:nth-child(2) {
+  width: 10rem;
+}
+.engine-events-view .frame > div:nth-child(3),
+.engine-events-view .header > div:nth-child(3) {
+  width: 10rem;
+}
+.engine-events-view .frame > div:nth-child(4),
+.engine-events-view .header > div:nth-child(4) {
+  width: 15rem;
+}
+
+
+
+.engine-events-view .frame-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-evenly;
+  align-items: center;
+  margin-left: 1em;
+  margin-top: 1px;
+  margin-bottom: 1px;  
 }
 
 

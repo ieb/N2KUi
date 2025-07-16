@@ -667,5 +667,5 @@ class NMEA2000 extends TextBox {
 
 
 export {
-  TextBox, LogBox, TimeBox, LatitudeBox, NMEA2000, SystemStatus, EngineEvents
+  TextBox, LogBox, TimeBox, LatitudeBox, NMEA2000, SystemStatus, EngineEvents,
 };

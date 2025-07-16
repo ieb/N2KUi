@@ -5,6 +5,7 @@ import { NMEALayout } from './layout.js';
 import { StoreView, FrameView } from './storeview.js';
 import { DebugView } from './debugview.js';
 import { AdminView } from './admin.js';
+import { EngineView } from './engine.js';
 import { Menu } from './menu.js';
 import { StoreAPIImpl, SeaSmartReader, SeaSmartEncoder } from './n2kmodule.js';
 import { EventEmitter } from './eventemitter.js';
@@ -21,10 +22,7 @@ class App extends Component {
     this.storeAPI = new StoreAPIImpl();
     this.seasmartReader = new SeaSmartReader(this.storeAPI.getParser());
     this.initialApiUrl = new URL(window.location);
-    if (props.host) {
-      this.initialApiUrl = new URL(`http://${props.host}`);
-    }
-    this.apiHost = 'boatsystems.local';
+    this.apiHost = props.host || 'boatsystems.local';
     this.state = {
       view: props.view,
       layout: props.layout,
@@ -234,6 +232,14 @@ class App extends Component {
       return html`<${DebugView} 
             key=${this.state.menuKey}
             storeAPI=${this.storeAPI} />
+            `;
+    }
+    if (this.state.view === 'engine') {
+      return html`<${EngineView} 
+            key=${this.state.menuKey}
+            storeAPI=${this.storeAPI}
+            commandHandler=${this.handleMenuEvents} 
+            apiUrl=${this.state.apiUrl} />
             `;
     }
     return html`<${NMEALayout} 

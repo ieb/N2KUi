@@ -312,6 +312,7 @@ class Menu extends Component {
                 <a key="night" cmd="set-theme" theme="night" href="#" onClick=${this.onClickMenu} >night</a>
               </div>
             </div>
+            <div class="nav-item"><a href="#" cmd="set-view" view="engine" onClick=${this.onClickMenu} >Engine</a></div>
             <div class="nav-item">
               <input type="text" name="apiHost" value=${this.state.apiHost} onChange=${this.apiChange} />
               <button onClick=${this.onClickConnect} >${this.state.connectButtonText}</button>

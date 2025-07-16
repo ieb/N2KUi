@@ -34,7 +34,7 @@ class DisplayUtils {
 
 class RelativeAngle {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '--';
     }
     return `${(v * (180 / Math.PI)).toFixed(0)}`;
@@ -83,7 +83,7 @@ class RelativeAnglePS extends RelativeAngle {
   static get type() { return 'relativePS'; }
 
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '--';
     }
 
@@ -106,7 +106,7 @@ class RelativeAnglePS extends RelativeAngle {
 
 class RelativeBearing {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '--';
     }
     if (v < 0) {
@@ -126,7 +126,7 @@ class RelativeBearing {
   static get type() { return 'relativeBearing'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * (180 / Math.PI));
@@ -154,7 +154,7 @@ class RelativeBearing {
 }
 class WindSpeed {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v * 1.9438452).toFixed(1);
@@ -171,7 +171,7 @@ class WindSpeed {
   static get type() { return 'speed'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * 1.9438452);
@@ -201,7 +201,7 @@ class WindSpeed {
 }
 class Speed {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v * 1.9438452).toFixed(1);
@@ -218,7 +218,7 @@ class Speed {
   static get type() { return 'speed'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * 1.9438452);
@@ -251,7 +251,7 @@ class Speed {
 
 class Distance {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v * 0.000539957).toFixed(2);
@@ -268,7 +268,7 @@ class Distance {
   static get type() { return 'distance'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * 0.000539957);
@@ -287,7 +287,7 @@ class Distance {
 
 class AtmosphericPressure {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     // convery Pascale or mbar
@@ -305,7 +305,48 @@ class AtmosphericPressure {
   static get type() { return 'pressure'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
+      return 0;
+    }
+    return (v * 0.01);
+  }
+
+  static range(h) {
+    // h is in display units, converted by caller.
+    const minMax = DisplayUtils.calMinMax(h);
+    if (!minMax) {
+      return undefined;
+    }
+
+    minMax.minV = Math.floor(minMax.minV / 10) * 10;
+    minMax.maxV = (Math.floor(minMax.maxV / 10) + 1) * 10;
+    minMax.nsamples = h.length;
+    return minMax;
+  }
+}
+
+
+class PressurePsi {
+  static display(v) {
+    if (v === undefined || v === -1E9 || v === '') {
+      return '-.-';
+    }
+    // convert Pascale or mbar
+    return (v * 0.000145038).toFixed(0);
+  }
+
+  static get tl() { return ''; }
+
+  static get tr() { return ''; }
+
+  static get withHistory() { return true; }
+
+  static get units() { return 'psi'; }
+
+  static get type() { return 'pressure'; }
+
+  static toDisplayUnits(v) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * 0.01);
@@ -327,10 +368,9 @@ class AtmosphericPressure {
 
 
 
-
 class Bearing {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v * (180 / Math.PI)).toFixed(0);
@@ -347,7 +387,7 @@ class Bearing {
   static get type() { return 'bearing'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * (180 / Math.PI));
@@ -368,7 +408,7 @@ class Bearing {
 
 class Latitude {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
 
@@ -395,7 +435,7 @@ class Latitude {
   static get type() { return 'position'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -404,7 +444,7 @@ class Latitude {
 
 class Longitude {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
 
@@ -430,7 +470,7 @@ class Longitude {
   static get type() { return 'position'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -442,7 +482,7 @@ class Longitude {
 
 class Percent {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v * 100).toFixed(1);
@@ -459,7 +499,7 @@ class Percent {
   static get type() { return 'ratio'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v * 100);
@@ -486,7 +526,7 @@ class Percent {
 
 class Ratio {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v).toFixed(1);
@@ -503,7 +543,7 @@ class Ratio {
   static get type() { return 'ratio'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -530,7 +570,7 @@ class Ratio {
 
 class Capacity {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v).toFixed(1);
@@ -547,7 +587,7 @@ class Capacity {
   static get type() { return 'capacity'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -574,7 +614,7 @@ class Capacity {
 
 class Depth {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v).toFixed(1);
@@ -591,7 +631,7 @@ class Depth {
   static get type() { return 'depth'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -620,10 +660,10 @@ class Depth {
 
 class Rpm {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v).toFixed(0);
+    return (+v).toFixed(0);
   }
 
   static get tl() { return ''; }
@@ -637,7 +677,7 @@ class Rpm {
   static get type() { return 'rpm'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -663,7 +703,7 @@ class Rpm {
 }
 class Temperature {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v - 273.15).toFixed(1);
@@ -680,7 +720,7 @@ class Temperature {
   static get type() { return 'temperature'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v - 273.15);
@@ -699,9 +739,19 @@ class Temperature {
   }
 }
 
+class TemperatureC extends Temperature {
+  static display(v) {
+    if (v === undefined || v < -100 || v === '') {
+      return '-.-';
+    }
+    return (+v).toFixed(1);
+  }
+}
+
+
 class Voltage {
   static display(v) {
-    if (v === undefined || v === -1E9 || v.toFixed === undefined) {
+    if (v === undefined || v === -1E9 || v === '' || v.toFixed === undefined) {
       return '-.-';
     }
     return (v).toFixed(2);
@@ -718,7 +768,7 @@ class Voltage {
   static get type() { return 'voltage'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -738,7 +788,7 @@ class Voltage {
 }
 class Current {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     return (v).toFixed(1);
@@ -755,7 +805,7 @@ class Current {
   static get type() { return 'current'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return (v);
@@ -786,7 +836,7 @@ class TimeStamp {
   static get type() { return 'time'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     return ((Date.now() - v) / 1000);
@@ -813,7 +863,7 @@ class GPSDate {
   static get type() { return ''; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
     const d = new Date(v * 3600000 * 24);
@@ -841,7 +891,7 @@ class GPSTime {
   static get type() { return ''; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '--';
     }
     // perhaps not right, perhaps this shoud be a Time object and not a string.
@@ -853,7 +903,7 @@ class GPSTime {
   }
 
   static display(v) {
-    if (v === undefined) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     // hh:mm:ss.ss
@@ -864,9 +914,38 @@ class GPSTime {
   }
 }
 
+class Hours {
+  static display(v) {
+    if (v === undefined || v === -1E9 || v === '' ) {
+      return '00:00:00';
+    }
+    const hh = Math.trunc(v);
+    const mm = Math.trunc((v - hh) * 60);
+    const ss = Math.trunc((v - hh - mm / 60) * 3600);
+    return `${(`00${(hh).toFixed(0)}`).slice(-2)}:${(`00${(mm).toFixed(0)}`).slice(-2)}:${(`00${(ss).toFixed(2)}`).slice(-2)}`;
+  }
+
+  static get tl() { return ''; }
+
+  static get tr() { return ''; }
+
+  static get withHistory() { return false; }
+
+  static get units() { return 'time'; }
+
+  static get type() { return ''; }
+
+  static toDisplayUnits(v) {
+    if (v === undefined || v === -1E9 || v === '') {
+      return 0;
+    }
+    return v;
+  }
+}
+
 class DefaultDataType {
   static display(v) {
-    if (v === undefined || v === -1E9) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     if (v.name !== undefined) {
@@ -935,7 +1014,9 @@ class DataTypes {
       rudderPosition: RelativeAnglePS,
       engineSpeed: Rpm,
       engineCoolantTemperature: Temperature,
+      engineHours: Hours,
       temperature: Temperature,
+      temperatureC: TemperatureC,
       alternatorVoltage: Voltage,
       voltage: Voltage,
       current: Current,
@@ -953,6 +1034,7 @@ class DataTypes {
       exhaustTemperature: Temperature,
       alternatorTemperature: Temperature,
       alternatorTemperature_0: Temperature,
+      psi: PressurePsi,
     };
   }
 

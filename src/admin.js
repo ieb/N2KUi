@@ -125,21 +125,28 @@ class AdminCredentals extends Component {
     });
 
     await this.adminRequest.saveCredentials(this.state.username, this.state.password);
-    const response = await this.adminRequest.fetchWithCredentials(
-      this.checkLoginUrl,
-      this.state.username,
-      this.state.password,
-    );
-    if (response.status === 200) {
+    try {
+      const response = await this.adminRequest.fetchWithCredentials(
+        this.checkLoginUrl,
+        this.state.username,
+        this.state.password,
+      );
+      if (response.status === 200) {
+        this.setState({
+          msg: 'correct, reloading...',
+        });
+        await this.credentialsOk();
+      } else {
+        this.setState({
+          msg: 'incorrect',
+        });
+        await this.adminRequest.logout();
+      }
+    } catch (e) {
+      console.log('Failed to connect',e);
       this.setState({
-        msg: 'correct, reloading...',
+        msg: 'connection failed',
       });
-      await this.credentialsOk();
-    } else {
-      this.setState({
-        msg: 'incorrect',
-      });
-      await this.adminRequest.logout();
     }
   }
 
@@ -420,4 +427,4 @@ class AdminView extends Component {
   }
 }
 
-export { AdminView };
+export { AdminView, AdminRequest, AdminCredentals };

@@ -4,12 +4,14 @@ import { App } from './app.js';
 
 const html = htm.bind(h);
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/n2k/worker.js', { scope: '/n2k/', type: 'module' });
-  navigator.serviceWorker.ready.then((registration) => {
-    const cacheEnabled = !window.location.hash.includes('disableCache');
-    registration.active.postMessage({ cacheEnabled });
-  });
+if ( false ) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/n2k/worker.js', { scope: '/n2k/', type: 'module' });
+    navigator.serviceWorker.ready.then((registration) => {
+      const cacheEnabled = !window.location.hash.includes('disableCache');
+      registration.active.postMessage({ cacheEnabled });
+    });
+  }
 }
 
 const getLocationProperties = () => {
@@ -26,8 +28,6 @@ const getLocationProperties = () => {
     props[kv[0]] = decodeURIComponent(kv[1]);
   }
   console.log('URL properties', props);
-  props.host = props.host || window.location.host;
-  props.host = '192.168.1.11';
   return props;
 };
 
