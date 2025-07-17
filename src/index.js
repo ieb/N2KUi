@@ -4,15 +4,6 @@ import { App } from './app.js';
 
 const html = htm.bind(h);
 
-if ( false ) {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/n2k/worker.js', { scope: '/n2k/', type: 'module' });
-    navigator.serviceWorker.ready.then((registration) => {
-      const cacheEnabled = !window.location.hash.includes('disableCache');
-      registration.active.postMessage({ cacheEnabled });
-    });
-  }
-}
 
 const getLocationProperties = () => {
   const props = {};
@@ -33,6 +24,17 @@ const getLocationProperties = () => {
 
 const rootElement = document.getElementById('root');
 const properties = getLocationProperties();
+
+if (properties.noServiceWorker !== 'true' && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/n2k/worker.js', { scope: '/n2k/', type: 'module' });
+  navigator.serviceWorker.ready.then((registration) => {
+    const cacheEnabled = !window.location.hash.includes('disableCache');
+    registration.active.postMessage({ cacheEnabled });
+  });
+} else {
+  console.log('Service worker disabled');
+}
+
 
 render(html`<${App} host=${properties.host} view=${properties.view} layout=${properties.layout} />`, rootElement);
 
