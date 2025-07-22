@@ -37,7 +37,7 @@ class RelativeAngle {
     if (v === undefined || v === -1E9 || v === '') {
       return '--';
     }
-    return `${(v * (180 / Math.PI)).toFixed(0)}`;
+    return `${(+v * (180 / Math.PI)).toFixed(0)}`;
   }
 
   static get tl() { return ''; }
@@ -54,7 +54,7 @@ class RelativeAngle {
     if (v === undefined || v === -1E9) {
       return 0;
     }
-    return (v * (180 / Math.PI));
+    return (+v * (180 / Math.PI));
   }
 
   static range(h) {
@@ -87,17 +87,17 @@ class RelativeAnglePS extends RelativeAngle {
       return '--';
     }
 
-    if (v < 0) {
+    if (+v < 0) {
       return `P${(-v * (180 / Math.PI)).toFixed(0)}`;
     }
-    return `S${(v * (180 / Math.PI)).toFixed(0)}`;
+    return `S${(+v * (180 / Math.PI)).toFixed(0)}`;
   }
 
   static cssClass(v) {
     if (v === undefined) {
       return 'undef';
     }
-    if (v < 0) {
+    if (+v < 0) {
       return 'port';
     }
     return 'starboard';
@@ -112,7 +112,7 @@ class RelativeBearing {
     if (v < 0) {
       return `W${(-v * (180 / Math.PI)).toFixed(0)}`;
     }
-    return `E${(v * (180 / Math.PI)).toFixed(0)}`;
+    return `E${(+v * (180 / Math.PI)).toFixed(0)}`;
   }
 
   static get tl() { return ''; }
@@ -129,7 +129,7 @@ class RelativeBearing {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * (180 / Math.PI));
+    return (+v * (180 / Math.PI));
   }
 
   static range(h) {
@@ -157,7 +157,7 @@ class WindSpeed {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v * 1.9438452).toFixed(1);
+    return (+v * 1.9438452).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -174,7 +174,7 @@ class WindSpeed {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * 1.9438452);
+    return (+v * 1.9438452);
   }
 
   static range(h) {
@@ -204,7 +204,7 @@ class Speed {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v * 1.9438452).toFixed(1);
+    return (+v * 1.9438452).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -221,7 +221,7 @@ class Speed {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * 1.9438452);
+    return (+v * 1.9438452);
   }
 
   static range(h) {
@@ -254,7 +254,7 @@ class Distance {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v * 0.000539957).toFixed(2);
+    return (+v * 0.000539957).toFixed(2);
   }
 
   static get tl() { return ''; }
@@ -271,7 +271,42 @@ class Distance {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * 0.000539957);
+    return (+v * 0.000539957);
+  }
+
+  static range(h) {
+    // h is in display units, converted by caller.
+    const minMax = DisplayUtils.calMinMax(h);
+    if (!minMax) {
+      return undefined;
+    }
+    minMax.nsamples = h.length;
+    return minMax;
+  }
+}
+class DistanceNm {
+  static display(v) {
+    if (v === undefined || v === -1E9 || v === '') {
+      return '-.-';
+    }
+    return (+v).toFixed(1);
+  }
+
+  static get tl() { return ''; }
+
+  static get tr() { return ''; }
+
+  static get withHistory() { return true; }
+
+  static get units() { return 'Nm'; }
+
+  static get type() { return 'distance'; }
+
+  static toDisplayUnits(v) {
+    if (v === undefined || v === -1E9 || v === '') {
+      return 0;
+    }
+    return (+v);
   }
 
   static range(h) {
@@ -285,13 +320,14 @@ class Distance {
   }
 }
 
+
 class AtmosphericPressure {
   static display(v) {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
     // convery Pascale or mbar
-    return (v * 0.01).toFixed(0);
+    return (+v * 0.01).toFixed(0);
   }
 
   static get tl() { return ''; }
@@ -308,7 +344,7 @@ class AtmosphericPressure {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * 0.01);
+    return (+v * 0.01);
   }
 
   static range(h) {
@@ -331,8 +367,7 @@ class PressurePsi {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    // convert Pascale or mbar
-    return (v * 0.000145038).toFixed(0);
+    return (+v).toFixed(0);
   }
 
   static get tl() { return ''; }
@@ -349,7 +384,7 @@ class PressurePsi {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * 0.01);
+    return (+v);
   }
 
   static range(h) {
@@ -373,7 +408,7 @@ class Bearing {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v * (180 / Math.PI)).toFixed(0);
+    return (+v * (180 / Math.PI)).toFixed(0);
   }
 
   static get tl() { return ''; }
@@ -390,7 +425,7 @@ class Bearing {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * (180 / Math.PI));
+    return (+v * (180 / Math.PI));
   }
 
   static range(h) {
@@ -413,7 +448,7 @@ class Latitude {
     }
 
     let ns = 'N';
-    let vd = v;
+    let vd = +v;
     if (vd < 0) {
       ns = 'S';
       vd = -vd;
@@ -438,7 +473,7 @@ class Latitude {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 }
 
@@ -449,12 +484,12 @@ class Longitude {
     }
 
     let ew = 'E';
-    let vd = v;
+    let vd = +v;
     if (vd < 0) {
       ew = 'W';
       vd = -vd;
     }
-    const dd = Math.trunc(v);
+    const dd = Math.trunc(vd);
     const mm = (vd - dd) * 60;
     return `${(`000${dd.toFixed(0)}`).slice(-3)}°${(`00${mm.toFixed(3)}`).slice(-6)}′${ew}`;
   }
@@ -473,7 +508,7 @@ class Longitude {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 }
 
@@ -485,7 +520,7 @@ class Percent {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v * 100).toFixed(1);
+    return (+v * 100).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -502,7 +537,7 @@ class Percent {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v * 100);
+    return (+v * 100);
   }
 
   static range(h) {
@@ -529,7 +564,7 @@ class Ratio {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v).toFixed(1);
+    return (+v).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -546,7 +581,7 @@ class Ratio {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 
   static range(h) {
@@ -573,7 +608,7 @@ class Capacity {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v).toFixed(1);
+    return (+v).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -590,7 +625,7 @@ class Capacity {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 
   static range(h) {
@@ -617,7 +652,7 @@ class Depth {
     if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v).toFixed(1);
+    return (+v).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -634,7 +669,7 @@ class Depth {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 
   static range(h) {
@@ -680,7 +715,7 @@ class Rpm {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 
   static range(h) {
@@ -751,10 +786,10 @@ class TemperatureC extends Temperature {
 
 class Voltage {
   static display(v) {
-    if (v === undefined || v === -1E9 || v === '' || v.toFixed === undefined) {
+    if (v === undefined || v === -1E9 || v === '') {
       return '-.-';
     }
-    return (v).toFixed(2);
+    return (+v).toFixed(2);
   }
 
   static get tl() { return ''; }
@@ -771,7 +806,7 @@ class Voltage {
     if (v === undefined || v === -1E9 || v === '') {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 
   static range(h) {
@@ -788,10 +823,10 @@ class Voltage {
 }
 class Current {
   static display(v) {
-    if (v === undefined || v === -1E9 || v === '') {
+    if (v === undefined || v === -1E9 || v === '' ) {
       return '-.-';
     }
-    return (v).toFixed(1);
+    return (+v).toFixed(1);
   }
 
   static get tl() { return ''; }
@@ -805,10 +840,10 @@ class Current {
   static get type() { return 'current'; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9 || v === '') {
+    if (v === undefined || v === -1E9 || v === '' ) {
       return 0;
     }
-    return (v);
+    return (+v);
   }
 
   static range(h) {
@@ -863,7 +898,7 @@ class GPSDate {
   static get type() { return ''; }
 
   static toDisplayUnits(v) {
-    if (v === undefined || v === -1E9 || v === '') {
+    if (v === undefined || v === -1E9 || v === '' ) {
       return 0;
     }
     const d = new Date(v * 3600000 * 24);
@@ -917,12 +952,12 @@ class GPSTime {
 class Hours {
   static display(v) {
     if (v === undefined || v === -1E9 || v === '' ) {
-      return '00:00:00';
+      return '00h00m';
     }
     const hh = Math.trunc(v);
     const mm = Math.trunc((v - hh) * 60);
     const ss = Math.trunc((v - hh - mm / 60) * 3600);
-    return `${(`00${(hh).toFixed(0)}`).slice(-2)}:${(`00${(mm).toFixed(0)}`).slice(-2)}:${(`00${(ss).toFixed(2)}`).slice(-2)}`;
+    return `${(`00${(hh).toFixed(0)}`).slice(-2)}h${(`00${(mm).toFixed(0)}`).slice(-2)}m`;
   }
 
   static get tl() { return ''; }
@@ -1004,6 +1039,7 @@ class DataTypes {
       deviation: RelativeBearing,
       log: Distance,
       tripLog: Distance,
+      logNm: DistanceNm,
       atmosphericPressure: AtmosphericPressure,
       latitude: Latitude,
       longitude: Longitude,

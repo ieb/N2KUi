@@ -102,20 +102,21 @@ class SeaSmartParser extends EventEmitter {
 
   static _checkSumOk(sentence) {
     let cs = 0;
-    for (let i = 1; i < sentence.length - 3; i++) {
+    const sentenceParts = sentence.split('*');
+    for (let i = 1; i < sentenceParts[0].length; i++) {
       /* eslint-disable-next-line no-bitwise */
       cs ^= sentence.charCodeAt(i);
     }
     const csCheck = cs.toString(16).padStart(2, '0').toUpperCase();
-    const csSentence = sentence.substring(sentence.length - 2);
-    if (csCheck === csSentence) {
+    if (csCheck === sentenceParts[1].trim()) {
       return true;
     }
     // eslint-disable-next-line no-console
-    console.log('SeaSmart message checksum failed ', csCheck, sentence);
+    console.log('SeaSmart message checksum failed ', csCheck, sentenceParts);
     return false;
   }
 }
+
 
 
 /**
